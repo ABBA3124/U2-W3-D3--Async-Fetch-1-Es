@@ -10,6 +10,7 @@ function fetchBooks() {
     .catch((error) => {
       console.error("Errore, libri non trovati:", error)
       displayError()
+      clearCart()
     })
 }
 
@@ -32,7 +33,7 @@ function createBookCard(book) {
             <div class="card-body d-flex flex-column flex-grow-1">
                 <h5 class="card-title">${book.title}</h5>
                 <p class="card-text">${book.price.toFixed(2)}€</p>
-                <button class="btn btn-danger mt-auto" onclick="removeCard(this)">Scarta</button>
+                <button class="btn btn-danger mt-auto" onclick="removeCard(this)">Rimuovi</button>
                 <button class="btn btn-success mt-2" onclick="addToCart('${
                   book.asin
                 }', '${book.title}', ${book.price}, '${
@@ -111,6 +112,14 @@ function displayCart() {
   )}€</span>`
   totalElement.style.fontSize = "1.2rem"
   cartList.appendChild(totalElement)
+
+
+  //ultima aggiunta per far apparire il bottone che permette di svuotare il carrello
+  const clearButton = document.createElement("button")
+        clearButton.className = "btn btn-warning btn-lg"
+        clearButton.textContent = "Svuota Carrello"
+        clearButton.onclick = clearCart
+        cartList.appendChild(clearButton)
 }
 
 function changeQuantity(asin, change) {
@@ -140,7 +149,15 @@ function displayError() {
   const bookList = document.getElementById("book-list")
   bookList.innerHTML =
     '<div class="alert alert-danger" role="alert">Impossibile caricare la lista dei libri disponibili. Si prega di riprovare più tardi.</div>'
+    
 
   localStorage.setItem("cart", JSON.stringify([]))
   displayCart()
+}
+
+
+// funzione svuota il carrerllo e aggiorna il carrello
+function clearCart() {
+    localStorage.setItem("cart", JSON.stringify([]))
+    displayCart()
 }
