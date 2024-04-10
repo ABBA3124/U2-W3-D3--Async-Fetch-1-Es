@@ -16,3 +16,8 @@
 .card-body button {
   margin-top: auto;
 } */
+
+.list-group-item {
+  align-items: center;
+  gap: 10px;
+}
